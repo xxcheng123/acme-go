@@ -1,6 +1,9 @@
 package errs
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/xxcheng123/acme-go/constants"
+)
 
 /**
 * @Author: xxcheng
@@ -29,19 +32,9 @@ type SubProblem struct {
 	// ACME clients may choose to use the "identifier" field of a subProblem
 	// as a hint that an operation would succeed if that identifier were
 	// omitted.
-	Identifier Identifier `json:"identifier,omitempty"`
+	Identifier constants.Identifier `json:"identifier,omitempty"`
 }
 
 func (s *SubProblem) Error() string {
 	return fmt.Sprintf("error:%s,detail:%s", s.Type, s.Detail)
-}
-
-// Identifier
-// https://datatracker.ietf.org/doc/html/rfc8555#section-9.7.7
-// It can only be present in SubProblems.
-// SubProblems need not all have the same type, and they do not need to
-// match the top level type.
-type Identifier struct {
-	Type  string `json:"type"`
-	Value string `json:"value"`
 }

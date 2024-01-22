@@ -2,6 +2,7 @@ package nonceer
 
 import (
 	"github.com/xxcheng123/acme-go/api"
+	"github.com/xxcheng123/acme-go/constants"
 	"github.com/xxcheng123/acme-go/errs"
 	"github.com/xxcheng123/acme-go/internal/sender"
 	"sync"
@@ -26,7 +27,6 @@ type Nonceer struct {
 	loopNonceSleep time.Duration
 	mu             sync.Mutex
 }
-type Nonce = string
 type NewNonceerOption func(nonceer *Nonceer)
 
 func SetCacheSize(size int) NewNonceerOption {
@@ -47,7 +47,7 @@ func NewNonceer(sender *sender.Sender, nonceURL string, opts ...NewNonceerOption
 	}
 	return nonceer, nil
 }
-func (n *Nonceer) Get() (Nonce, error) {
+func (n *Nonceer) Get() (constants.Nonce, error) {
 	go n.newNonce()
 	select {
 	case nonce := <-n.caches:
