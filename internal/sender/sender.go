@@ -81,3 +81,18 @@ func (s *Sender) Head(url string) (*http.Response, error) {
 	}
 	return s.do(req)
 }
+func (s *Sender) Post(url string, body io.Reader) (*http.Response, error) {
+	req, err := s.newRequest(http.MethodPost, url, body)
+	if err != nil {
+		return nil, err
+	}
+	return s.do(req)
+}
+func (s *Sender) PostJOSE(url string, body io.Reader) (*http.Response, error) {
+	req, err := s.newRequest(http.MethodPost, url, body)
+	req.Header.Set("Content-Type", "application/jose+json")
+	if err != nil {
+		return nil, err
+	}
+	return s.do(req)
+}

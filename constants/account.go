@@ -25,9 +25,9 @@ package constants
 // - externalAccountBinding（可选，对象）：在newAccount请求中包含此字段表示现有非ACME账户的持有者同意将该账户绑定到此ACME账户。此字段不可由客户端更新（参见 [第7.3.4节](#7.3.4. 外部帐号绑定)）。
 // - orders（必需，字符串）：此账户提交的订单列表可以通过POST-as-GET请求从此URL获取，详见 [第7.1.2.1节](#7.1.2.1. 订单列表)。
 type Account struct {
-	Status                 string   `json:"status"`
-	Contact                []string `json:"contact,omitempty"`
-	TermsOfServiceAgreed   bool     `json:"termsOfServiceAgreed,omitempty"`
-	ExternalAccountBinding any      `json:"externalAccountBinding,omitempty"`
-	Orders                 string   `json:"orders"`
+	Status                 string      `json:"status"`
+	Contact                []string    `json:"contact,omitempty"`
+	TermsOfServiceAgreed   bool        `json:"termsOfServiceAgreed,omitempty"`
+	ExternalAccountBinding WaitDefined `json:"externalAccountBinding,omitempty"`
+	Orders                 string      `json:"orders"`
 }

@@ -1,8 +1,11 @@
 package client
 
 import (
+	"crypto"
 	"github.com/xxcheng123/acme-go/api"
 	"github.com/xxcheng123/acme-go/constants"
+	"github.com/xxcheng123/acme-go/internal/jws"
+	"github.com/xxcheng123/acme-go/internal/nonceer"
 	"github.com/xxcheng123/acme-go/internal/sender"
 )
 
@@ -13,20 +16,35 @@ import (
  */
 
 type Client struct {
-	directoryURL string
-	sender       *sender.Sender
-	directory    *constants.Directory
+	DirectoryURL string
+	Sender       *sender.Sender
+	Directory    *constants.Directory
+	Nonceer      *nonceer.Nonceer
+	JWSManager   *jws.Manager
+	Account      *constants.Account
 }
 
-func NewClient(directoryURL string) (*Client, error) {
+func NewClient(directoryURL string, privateKey crypto.PrivateKey) (*Client, error) {
 	sdr := sender.NewSender()
 	directory, err := api.GetDirectory(sdr, directoryURL)
+
+	if err != nil {
+		return nil, err
+	}
+	newNonceer, err := nonceer.NewNonceer(sdr, directory.NewNonce)
+	if err != nil {
+		return nil, err
+	}
+	jwtManager, err := jws.NewManager(privateKey, newNonceer, "")
 	if err != nil {
 		return nil, err
 	}
 	return &Client{
-		directoryURL: directoryURL,
-		sender:       sdr,
-		directory:    directory,
+		DirectoryURL: directoryURL,
+		Sender:       sdr,
+		Directory:    directory,
+		Nonceer:      newNonceer,
+		JWSManager:   jwtManager,
+		Account:      nil,
 	}, nil
 }

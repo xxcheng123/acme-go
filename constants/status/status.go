@@ -1,9 +1,9 @@
-package constants
+package status
 
 /**
 * @Author: xxcheng
 * @Email developer@xxcheng.cn
-* @Date: 2024/1/19 17:37
+* @Date: 2024/1/25 17:00
  */
 
 // Status List
@@ -52,12 +52,12 @@ package constants
 //
 //	               State Transitions for Authorization Objects
 const (
-	StatusPending     = "pending"
-	StatusReady       = "ready"
-	StatusProcessing  = "processing"
-	StatusValid       = "valid"
-	StatusInvalid     = "invalid"
-	StatusExpired     = "expired"
-	StatusDeactivated = "deactivated"
-	StatusRevoked     = "revoked"
+	Pending     = "pending"
+	Ready       = "ready"
+	Processing  = "processing"
+	Valid       = "valid"
+	Invalid     = "invalid"
+	Expired     = "expired"
+	Deactivated = "deactivated"
+	Revoked     = "revoked"
 )
