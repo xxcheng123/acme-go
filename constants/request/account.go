@@ -1,4 +1,4 @@
-package service
+package request
 
 import "github.com/xxcheng123/acme-go/constants"
 
@@ -8,6 +8,7 @@ import "github.com/xxcheng123/acme-go/constants"
 * @Date: 2024/1/25 10:37
  */
 
+// Account for request struct
 type Account struct {
 	Contact                []string              `json:"contact,omitempty"`
 	TermsOfServiceAgreed   bool                  `json:"termsOfServiceAgreed,omitempty"`

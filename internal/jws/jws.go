@@ -39,6 +39,9 @@ type Manager struct {
 	kid        string
 }
 
+func (m *Manager) GetPrivateKey() crypto.PrivateKey {
+	return m.privateKey
+}
 func (m *Manager) SetKid(kid string) {
 	m.kid = kid
 }
@@ -86,4 +89,23 @@ func (m *Manager) Sign(url string, payload []byte) (*jose.JSONWebSignature, erro
 		return nil, err
 	}
 	return signer.Sign(payload)
+}
+
+type CloneOpt func(*Manager) *Manager
+
+func CustomKid(kid string) CloneOpt {
+	return func(m *Manager) *Manager {
+		m.kid = kid
+		return m
+	}
+}
+
+// Clone
+// For different account.
+func (m *Manager) Clone(opts ...CloneOpt) *Manager {
+	nm, _ := NewManager(m.privateKey, m.Nonceer, m.kid)
+	for _, opt := range opts {
+		nm = opt(nm)
+	}
+	return nm
 }

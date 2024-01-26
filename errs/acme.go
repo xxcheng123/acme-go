@@ -36,3 +36,14 @@ const (
 	UnsupportedIdentifier   AcmeError = "unsupportedIdentifier An identifier is of an unsupported type"
 	UserActionRequired      AcmeError = "userActionRequired Visit the \"instance\" URL and take actions specified there"
 )
+
+type Problem struct {
+	Type       AcmeError     `json:"type"`
+	Detail     string        `json:"detail"`
+	Status     int           `json:"status"`
+	SubProblem []*SubProblem `json:"subproblem,omitempty"`
+}
+
+func (p *Problem) Error() string {
+	return p.Detail
+}

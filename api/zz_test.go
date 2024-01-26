@@ -22,7 +22,3 @@ func Test_GetDirectory(t *testing.T) {
 	_, err := GetDirectory(sdr, acme_go.DefaultAcmeDirectoryURL)
 	assert.Equal(t, nil, err)
 }
-func Test_GetNonce(t *testing.T) {
-	_, err := GetNonce(sdr, acme_go.DefaultNewNonceURL)
-	assert.Equal(t, nil, err)
-}

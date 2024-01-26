@@ -3,6 +3,7 @@ package sender
 import (
 	"fmt"
 	acme_go "github.com/xxcheng123/acme-go"
+	"github.com/xxcheng123/acme-go/constants"
 	"github.com/xxcheng123/acme-go/errs"
 	"io"
 	"net/http"
@@ -90,7 +91,7 @@ func (s *Sender) Post(url string, body io.Reader) (*http.Response, error) {
 }
 func (s *Sender) PostJOSE(url string, body io.Reader) (*http.Response, error) {
 	req, err := s.newRequest(http.MethodPost, url, body)
-	req.Header.Set("Content-Type", "application/jose+json")
+	req.Header.Set("Content-Type", constants.ContentTypeJoseJson)
 	if err != nil {
 		return nil, err
 	}

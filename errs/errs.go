@@ -25,7 +25,7 @@ var codeMapErrorMessage = map[Code]string{
 	NotSupportedCrypto:     "Not Supported Crypto",
 	CreateNewAccountFailed: "Create New Account Failed",
 	StatusNotMatched:       "Status Not Matched",
-	NotAgree:               "you must agree to the terms of service",
+	NotAgree:               "you must agree to the terms of request",
 }
 
 func (c Code) Error() string {

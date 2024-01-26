@@ -29,5 +29,9 @@ type Account struct {
 	Contact                []string    `json:"contact,omitempty"`
 	TermsOfServiceAgreed   bool        `json:"termsOfServiceAgreed,omitempty"`
 	ExternalAccountBinding WaitDefined `json:"externalAccountBinding,omitempty"`
-	Orders                 string      `json:"orders"`
+	// Orders
+	// https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.2.1
+	Orders string `json:"orders"`
+	// For internal use
+	Kid string `json:"-"`
 }
