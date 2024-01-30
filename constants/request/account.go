@@ -10,8 +10,8 @@ import "github.com/xxcheng123/acme-go/constants"
 
 // Account for request struct
 type Account struct {
-	Contact                []string              `json:"contact,omitempty"`
-	TermsOfServiceAgreed   bool                  `json:"termsOfServiceAgreed,omitempty"`
-	OnlyReturnExisting     bool                  `json:"onlyReturnExisting,omitempty"`
-	ExternalAccountBinding constants.WaitDefined `json:"externalAccountBinding,omitempty"`
+	Contact                []string                         `json:"contact,omitempty"`
+	TermsOfServiceAgreed   bool                             `json:"termsOfServiceAgreed,omitempty"`
+	OnlyReturnExisting     bool                             `json:"onlyReturnExisting,omitempty"`
+	ExternalAccountBinding constants.ExternalAccountBinding `json:"externalAccountBinding,omitempty"`
 }

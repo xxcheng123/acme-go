@@ -2,7 +2,9 @@ package client
 
 import (
 	"crypto"
+	"crypto/x509"
 	"encoding/json"
+	"encoding/pem"
 	"fmt"
 	"github.com/xxcheng123/acme-go/account"
 	"github.com/xxcheng123/acme-go/api"
@@ -13,6 +15,7 @@ import (
 	"github.com/xxcheng123/acme-go/internal/jws"
 	"github.com/xxcheng123/acme-go/internal/nonceer"
 	"github.com/xxcheng123/acme-go/internal/sender"
+	"io"
 	"os"
 )
 
@@ -54,7 +57,33 @@ func NewClient(directoryURL string, privateKey crypto.PrivateKey) (*Client, erro
 		},
 	}, nil
 }
-
+func LoadClient(path string) (*Client, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	bs, err := io.ReadAll(f)
+	if err != nil {
+		return nil, err
+	}
+	var p PerClient
+	if err = json.Unmarshal(bs, &p); err != nil {
+		return nil, err
+	}
+	pd, _ := pem.Decode([]byte(p.PrivateKey))
+	var pk crypto.PrivateKey
+	switch pd.Type {
+	case "RSA PRIVATE KEY":
+		pk, err = x509.ParsePKCS1PrivateKey(pd.Bytes)
+	case "EC PRIVATE KEY":
+		pk, err = x509.ParseECPrivateKey(pd.Bytes)
+	}
+	if err != nil {
+		return nil, err
+	}
+	return NewClient(p.DirectoryURL, pk)
+}
 func (c *Client) CreateAccount(email string, agree bool) (*account.Account, error) {
 	if !agree {
 		return nil, errs.NotAgree
@@ -77,11 +106,6 @@ func (c *Client) CreateAccount(email string, agree bool) (*account.Account, erro
 }
 
 func (c *Client) Persist(path string) error {
-	f, err := os.Open(path)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
 	bs, err := encryption.ConvertPrivateKey(c.Core.JWSManager.GetPrivateKey())
 	if err != nil {
 		return err
